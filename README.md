@@ -1,0 +1,2 @@
+# Whale
+Trading  System Simulation
