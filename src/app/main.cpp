@@ -18,7 +18,7 @@ int main(int argc, char** argv) {
     auto channel = grpc::CreateChannel(port, grpc::InsecureChannelCredentials());
 
     // Stocks we want to subscribe to
-    std::vector<std::string> stocks = {"AAPL", "NVD", "META", "TSLA", "AMZN"};
+    std::vector<std::string> stocks = {"AAPL", "AMZM", "GOOGL", "JNJ", "JPM", "META", "MSFT", "NVDA", "PG", "TSLA"};
 
     // Keep track of threads
     std::vector<std::thread> threads;

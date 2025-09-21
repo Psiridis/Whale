@@ -47,6 +47,7 @@ int main(int argc, char** argv) {
     std::cout << "Found " << files.size() << " CSV files:\n";
     for (const auto& f : files) {
         std::cout << "  " << f << "\n";
+        service.load_data(f);
     }
         
 
