@@ -12,14 +12,15 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # Required for gRPC/protobuf generated code to be linked safely
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
 # ---------------------------------------------------------
 # Dependencies
 # ---------------------------------------------------------
-
 # --- Protobuf ---
 # Try to locate Protobuf using CONFIG mode first
 #   -> Works on Windows with vcpkg or custom builds (modern style)
-find_package(Protobuf CONFIG QUIET)
+find_package(Protobuf CONFIG REQUIRED)
 
 # If CONFIG mode not found, fall back to MODULE mode
 #   -> Works on Linux systems with apt packages (legacy FindProtobuf.cmake)
@@ -32,6 +33,7 @@ endif()
 find_package(gRPC CONFIG REQUIRED)
 
 # Print out some status messages to help debug environment differences
+message(STATUS "CMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE}")
 message(STATUS "Using protobuf ${Protobuf_VERSION}")
 message(STATUS "Using gRPC ${gRPC_VERSION}")
 message(STATUS "Protobuf compiler: ${Protobuf_PROTOC_EXECUTABLE}")
@@ -69,8 +71,9 @@ add_custom_command(
 )
 
 # Define a custom target to group generated sources logically
+add_custom_target(generate_proto DEPENDS ${GENERATED_SRC} ${GENERATED_HDR})
 # Adding ALL ensures this always runs when building the project
-add_custom_target(generate_proto ALL DEPENDS ${GENERATED_SRC} ${GENERATED_HDR})
+#add_custom_target(generate_proto ALL DEPENDS ${GENERATED_SRC} ${GENERATED_HDR})
 
 # ---------------------------------------------------------
 # Proto library
@@ -95,6 +98,14 @@ target_include_directories(marketdata_proto PUBLIC
     ${GENERATED_DIR}
     ${Protobuf_INCLUDE_DIRS}
 )
+
+if(TARGET protobuf::libprotobuf)
+    add_library(protobuf::protobuf ALIAS protobuf::libprotobuf)
+else()
+    add_library(protobuf::protobuf INTERFACE)
+    target_link_libraries(protobuf::protobuf INTERFACE ${Protobuf_LIBRARIES})
+    target_include_directories(protobuf::protobuf INTERFACE ${Protobuf_INCLUDE_DIRS})
+endif()
 
 # ---------------------------------------------------------
 # Subdirectories

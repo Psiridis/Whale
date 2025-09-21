@@ -53,6 +53,10 @@ else()
     )
 endif()
 
+
+# Define the data directory as a preprocessor macro
+add_compile_definitions(CSV_DATA_DIR="${CMAKE_SOURCE_DIR}/data/csv")
+
 # (Optional) Create an alias target for clarity in larger projects
 # Usage example: other targets could depend on server::bin instead of marketdata_server
 add_executable(server::bin ALIAS marketdata_server)
