@@ -23,7 +23,7 @@ class StockData {
   double low() const { return m_low; }
   double close() const { return m_close; }
   double adj_close() const { return m_adj_close; }
-  long volume() const { return m_volume; }
+  long long volume() const { return m_volume; }
 
  private:
   std::string m_date;
@@ -32,7 +32,7 @@ class StockData {
   double m_high;
   double m_low;
   double m_open;
-  long m_volume;
+  long long m_volume;
 };
 
 class MarketDataServiceImpl final : public marketdata::MarketData::Service

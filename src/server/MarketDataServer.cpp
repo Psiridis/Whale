@@ -101,8 +101,13 @@ grpc::Status MarketDataServiceImpl::Subscribe(
             std::chrono::high_resolution_clock::now().time_since_epoch())
             .count();
 
-    price.set_symbol(request->symbol());
-    price.set_price(stock_data.close());  // send close price
+    price.set_symbol(it->first);
+    price.set_adjustedclose(stock_data.adj_close());
+    price.set_close(stock_data.close());
+    price.set_high(stock_data.high());
+    price.set_low(stock_data.low());
+    price.set_open(stock_data.open());
+    price.set_volume(stock_data.volume());
     price.set_timestamp_ns(now_ns);
 
     std::uniform_real_distribution<double> time_ms(100., 1000.);
@@ -112,8 +117,14 @@ grpc::Status MarketDataServiceImpl::Subscribe(
     writer->Write(price);
     {
       std::lock_guard<std::mutex> lock(cout_mutex);
-      std::cout << "[Server] Sent update for " << request->symbol()
-                << " price: " << price.price() << std::endl;
+      std::cout << "[Server] Sent update for " << it->first << ", " <<
+        "Date: "      << stock_data.date()      << ", " <<
+        "Adj Close: " << price.adjustedclose()  << ", " <<
+        "Close: "     << price.close()     << ", " <<
+        "High: "      << price.high()      << ", " <<
+        "Low: "       << price.low()       << ", " <<
+        "Open: "      << price.open()      << ", " <<
+        "Volume: "    << price.volume()    << std::endl;
     }
   }
 

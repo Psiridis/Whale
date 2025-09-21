@@ -42,8 +42,13 @@ void MarketDataClient::subscribeToSymbol(const std::string& symbol) {
         std::ostringstream oss;
 
         oss << "[Client#" << m_id << "][" << symbol
-            << "] Received price: " << price.price() << " @ "
-            << price.timestamp_ns();
+            << "] Received adj price: " << price.adjustedclose() << ", "
+            << "Close: "  << price.close()   << ", "
+            << "High: "   << price.high()    << ", "
+            << "Low: "    << price.low()     << ", "
+            << "Open: "   << price.open()    << ", "
+            << "Volume: " << price.volume()  << ", "
+            << " @ "      << price.timestamp_ns();
 
         std::cout << oss.str() << std::endl;
       }

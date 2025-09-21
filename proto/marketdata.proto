@@ -8,8 +8,13 @@ message StockRequest {
 
 message StockPrice {
   string symbol = 1;
-  double price = 2;
-  int64 timestamp_ns = 3; // nanosecond resolution
+  double adjustedClose = 2;
+  double close = 3;
+  double high = 4;
+  double low = 5;
+  double open = 6;
+  int64 volume = 7;
+  int64 timestamp_ns = 8; // nanosecond resolution
 }
 
 service MarketData {
