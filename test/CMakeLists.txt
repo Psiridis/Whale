@@ -26,6 +26,8 @@ target_sources(unit_tests
     PRIVATE
         test_latency.cpp
         test_client.cpp
+        test_server.cpp
+        ${CMAKE_SOURCE_DIR}/src/server/MarketDataServer.cpp
 )
 
 # Add include paths (so tests can see app/client/server headers if needed)
@@ -68,3 +70,8 @@ endif()
 # Register with CTest
 include(GoogleTest)
 gtest_discover_tests(unit_tests)
+
+target_compile_definitions(unit_tests
+    PRIVATE
+    TESTING_CMAKE_CURRENT_SOURCE_DIR="${CMAKE_CURRENT_SOURCE_DIR}"
+)

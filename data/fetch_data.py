@@ -22,7 +22,7 @@ from dateutil.relativedelta import relativedelta
 TICKERS = ["AAPL", "MSFT", "GOOGL", "AMZN", "META",
            "JPM", "JNJ", "NVDA", "PG", "TSLA"]
 
-def get_date_range(years_back=5):
+def get_date_range(years_back=1):
     """Return (start_date, end_date) for historical data."""
     today = datetime.today().date()
     past = today - relativedelta(years=years_back)
@@ -35,7 +35,7 @@ def main():
     os.makedirs(csv_dir, exist_ok=True)
 
     # Date range
-    start_date, end_date = get_date_range(5)
+    start_date, end_date = get_date_range(1)
     print(f"Fetching data from {start_date} to {end_date}")
 
     for ticker in TICKERS:

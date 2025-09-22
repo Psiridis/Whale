@@ -43,6 +43,10 @@ class MarketDataServiceImpl final : public marketdata::MarketData::Service
                             grpc::ServerWriter<marketdata::StockPrice> *writer) override;
 
     void load_data(const std::string &file);
+
+    const std::unordered_map<std::string, std::vector<StockData>>& getStockData() const;
+    const std::vector<StockData>& getStockData(const std::string& symbol) const;
+    
     private:
         std::unordered_map<std::string, std::vector<StockData>> m_stock_data;
 };

@@ -4,12 +4,12 @@
     "major": 3,
     "minor": 20
   },
+
   "configurePresets": [
     {
       "name": "windows-vcpkg-debug",
       "displayName": "Windows Debug (MSVC + vcpkg)",
       "description": "Debug build using vcpkg toolchain on Windows",
-      "generator": "Ninja",
       "binaryDir": "${sourceDir}/build/${presetName}",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Debug",
@@ -23,108 +23,94 @@
       "name": "windows-vcpkg-release",
       "displayName": "Windows Release (MSVC + vcpkg)",
       "description": "Release build using vcpkg toolchain on Windows",
-      "generator": "Ninja",
       "binaryDir": "${sourceDir}/build/${presetName}",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Release",
+        "CMAKE_TOOLCHAIN_FILE": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
         "VCPKG_TARGET_TRIPLET": "x64-windows",
         "CMAKE_C_COMPILER": "cl.exe",
         "CMAKE_CXX_COMPILER": "cl.exe"
       }
     },
     {
-      "name": "linux-gcc-debug",
-      "displayName": "Linux GCC Debug",
-      "description": "Debug build on Linux GCC 22.04 with system packages",
-      "generator": "Ninja",
+      "name": "linux-vcpkg-gcc-debug",
+      "displayName": "Linux GCC Debug (vcpkg)",
+      "description": "Debug build using vcpkg toolchain on Linux with GCC",
       "binaryDir": "${sourceDir}/build/${presetName}",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_TOOLCHAIN_FILE": "$env{HOME}/vcpkg/scripts/buildsystems/vcpkg.cmake",
         "VCPKG_TARGET_TRIPLET": "x64-linux",
         "CMAKE_C_COMPILER": "gcc",
         "CMAKE_CXX_COMPILER": "g++"
       }
     },
     {
-      "name": "linux-gcc-release",
-      "displayName": "Linux GCC Release",
-      "description": "Release build on Linux GCC 22.04 with system packages",
-      "generator": "Ninja",
+      "name": "linux-vcpkg-gcc-release",
+      "displayName": "Linux GCC Release (vcpkg)",
+      "description": "Release build using vcpkg toolchain on Linux with GCC",
       "binaryDir": "${sourceDir}/build/${presetName}",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Release",
+        "CMAKE_TOOLCHAIN_FILE": "$env{HOME}/vcpkg/scripts/buildsystems/vcpkg.cmake",
         "VCPKG_TARGET_TRIPLET": "x64-linux",
         "CMAKE_C_COMPILER": "gcc",
         "CMAKE_CXX_COMPILER": "g++"
       }
     },
     {
-      "name": "linux-clang-debug",
-      "displayName": "Linux Clang Debug",
-      "description": "Debug build on Linux GCC 22.04 with system packages",
-      "generator": "Ninja",
+      "name": "linux-vcpkg-clang-debug",
+      "displayName": "Linux Clang Debug (vcpkg)",
+      "description": "Debug build using vcpkg toolchain on Linux with Clang",
       "binaryDir": "${sourceDir}/build/${presetName}",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_TOOLCHAIN_FILE": "$env{HOME}/vcpkg/scripts/buildsystems/vcpkg.cmake",
         "VCPKG_TARGET_TRIPLET": "x64-linux",
         "CMAKE_C_COMPILER": "clang",
         "CMAKE_CXX_COMPILER": "clang++"
       }
     },
     {
-      "name": "linux-clang-release",
-      "displayName": "Linux Clang Release",
-      "description": "Release build on Linux GCC 22.04 with system packages",
-      "generator": "Ninja",
+      "name": "linux-vcpkg-clang-release",
+      "displayName": "Linux Clang Release (vcpkg)",
+      "description": "Release build using vcpkg toolchain on Linux with Clang",
       "binaryDir": "${sourceDir}/build/${presetName}",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Release",
+        "CMAKE_TOOLCHAIN_FILE": "$env{HOME}/vcpkg/scripts/buildsystems/vcpkg.cmake",
         "VCPKG_TARGET_TRIPLET": "x64-linux",
         "CMAKE_C_COMPILER": "clang",
         "CMAKE_CXX_COMPILER": "clang++"
       }
     }
   ],
+
   "buildPresets": [
-    {
-      "name": "windows-debug",
-      "configurePreset": "windows-vcpkg-debug"
-    },
-    {
-      "name": "windows-release",
-      "configurePreset": "windows-vcpkg-release"
-    },
-    {
-      "name": "linux-gcc-debug",
-      "configurePreset": "linux-gcc-debug"
-    },
-    {
-      "name": "linux-gcc-release",
-      "configurePreset": "linux-gcc-release"
-    },
-    {
-      "name": "linux-clang-debug",
-      "configurePreset": "linux-clang-debug"
-    },
-    {
-      "name": "linux-clang-release",
-      "configurePreset": "linux-clang-release"
-    }
+    { "name": "windows-debug", "configurePreset": "windows-vcpkg-debug" },
+    { "name": "windows-release", "configurePreset": "windows-vcpkg-release" },
+    { "name": "linux-gcc-debug", "configurePreset": "linux-vcpkg-gcc-debug" },
+    { "name": "linux-gcc-release", "configurePreset": "linux-vcpkg-gcc-release" },
+    { "name": "linux-clang-debug", "configurePreset": "linux-vcpkg-clang-debug" },
+    { "name": "linux-clang-release", "configurePreset": "linux-vcpkg-clang-release" }
   ],
+
   "testPresets": [
     {
+      "name": "windows-tests",
+      "configurePreset": "windows-vcpkg-debug",
+      "execution": { "noTestsAction": "error" }
+    },
+    {
       "name": "linux-gcc-tests",
-      "configurePreset": "linux-gcc-debug",
-      "execution": {
-        "noTestsAction": "error"
-      }
+      "configurePreset": "linux-vcpkg-gcc-debug",
+      "execution": { "noTestsAction": "error" }
     },
     {
       "name": "linux-clang-tests",
-      "configurePreset": "linux-clang-debug",
-      "execution": {
-        "noTestsAction": "error"
-      }
+      "configurePreset": "linux-vcpkg-clang-debug",
+      "execution": { "noTestsAction": "error" }
     }
   ]
 }
+

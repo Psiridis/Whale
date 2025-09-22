@@ -2,10 +2,10 @@
 #include <mutex>
 
 // Initialize static counter
-std::atomic<uint64_t> MarketDataClient::s_nextId{1};
+std::atomic<int> MarketDataClient::s_nextId{1};
 static std::mutex cout_mutex;
 
-MarketDataClient::MarketDataClient(std::shared_ptr<grpc::Channel> channel, uint64_t id)
+MarketDataClient::MarketDataClient(std::shared_ptr<grpc::Channel> channel, int id)
 : m_stub(marketdata::MarketData::NewStub(channel)),
   m_id(id)
 {
@@ -23,6 +23,10 @@ absl::StatusOr<MarketDataClient> MarketDataClient::createClient(std::shared_ptr<
 bool MarketDataClient::isConnected() const
 {
     return (nullptr != m_stub); 
+}
+
+int MarketDataClient::getId() const { 
+  return m_id;
 }
 
 void MarketDataClient::subscribeToSymbol(const std::string& symbol) {

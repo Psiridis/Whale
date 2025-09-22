@@ -13,17 +13,18 @@ class MarketDataClient
         static absl::StatusOr<MarketDataClient> createClient(std::shared_ptr<grpc::Channel> channel);
         
         [[nodiscard]] bool isConnected() const;
+        [[nodiscard]] int  getId() const;
 
         void subscribeToSymbol(const std::string& symbol);
 
     private:
-        explicit MarketDataClient(std::shared_ptr<grpc::Channel> channel, u_int64 id);
+        explicit MarketDataClient(std::shared_ptr<grpc::Channel> channel, int id);
     private:
         std::unique_ptr<marketdata::MarketData::Stub> m_stub;
-        uint64_t m_id;
+        int m_id;
 
         // Static atomic counter to generate unique IDs
-        static std::atomic<uint64_t> s_nextId;
+        static std::atomic<int> s_nextId;
 };
 
 

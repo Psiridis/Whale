@@ -77,6 +77,17 @@ void MarketDataServiceImpl::load_data(const std::string &filepath)
     */
 }
 
+const std::unordered_map<std::string, std::vector<StockData>> &
+MarketDataServiceImpl::getStockData() const {
+  return  m_stock_data;
+}
+
+const std::vector<StockData> &MarketDataServiceImpl::getStockData(
+    const std::string &symbol) const {
+  std::vector<StockData> empty;
+  auto it = m_stock_data.find(symbol);
+  return (it != m_stock_data.end()) ? it->second : empty;
+}
 
 grpc::Status MarketDataServiceImpl::Subscribe(
     grpc::ServerContext *context, const marketdata::StockRequest *request,
@@ -84,15 +95,16 @@ grpc::Status MarketDataServiceImpl::Subscribe(
 {
   std::cout << "[Server] Client subscribed to: " << request->symbol() << "\n";
 
-  // Random number generator for simulating stock prices
+  // Random number generator for generating delays
   std::mt19937 rng(std::random_device{}());
 
-  auto it = m_stock_data.find(request->symbol());
-  if (it == m_stock_data.end()) {
+  const std::vector<StockData>& stocks = getStockData(request->symbol());
+
+  if (stocks.empty()) {
     return grpc::Status(grpc::StatusCode::NOT_FOUND, "Symbol not found");
   }
 
-  for (const auto &stock_data : it->second) {
+  for (const auto &stock_data : stocks) {
     if (context->IsCancelled()) break;
 
     marketdata::StockPrice price;
@@ -101,7 +113,7 @@ grpc::Status MarketDataServiceImpl::Subscribe(
             std::chrono::high_resolution_clock::now().time_since_epoch())
             .count();
 
-    price.set_symbol(it->first);
+    price.set_symbol(request->symbol());
     price.set_adjustedclose(stock_data.adj_close());
     price.set_close(stock_data.close());
     price.set_high(stock_data.high());
@@ -117,7 +129,7 @@ grpc::Status MarketDataServiceImpl::Subscribe(
     writer->Write(price);
     {
       std::lock_guard<std::mutex> lock(cout_mutex);
-      std::cout << "[Server] Sent update for " << it->first << ", " <<
+      std::cout << "[Server] Sent update for " << request->symbol() << ", " <<
         "Date: "      << stock_data.date()      << ", " <<
         "Adj Close: " << price.adjustedclose()  << ", " <<
         "Close: "     << price.close()     << ", " <<
