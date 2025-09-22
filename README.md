@@ -118,6 +118,23 @@ In a separate terminal, run the HFT client application:
 - Clients will start streaming and printing stock prices along with latency measurements.
 
 ------------------------------------------------------------------------
+## 📊 Data Directory and Updating Stock Data
+
+In the project root, there is a `data/` directory that contains tools and CSV files used by the server.
+
+- **`data/csv/`** → This subdirectory stores historical stock data as CSV files.  
+- **`data/fetch_data.py`** → A Python script that automatically fetches historical data for **10 predefined S&P 500 stocks** over the past 5 years and saves them into `data/csv/`.
+
+### 🔄 Updating the Stock Data
+To refresh the CSV files with the latest data, run the script manually from the project root:
+
+```bash
+python ./data/fetch_data.py
+```
+
+After execution, the `data/csv/` folder will contain updated CSV files for the predefined stocks, which the gRPC server will load on startup.
+
+------------------------------------------------------------------------
 ## 🔹 Project Structure
 
 -  `CMakeLists.txt` → Handles cross-platform build, gRPC/Protobuf generation, executables
