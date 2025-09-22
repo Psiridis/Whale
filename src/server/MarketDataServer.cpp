@@ -84,7 +84,7 @@ MarketDataServiceImpl::getStockData() const {
 
 const std::vector<StockData> &MarketDataServiceImpl::getStockData(
     const std::string &symbol) const {
-  std::vector<StockData> empty;
+  static const std::vector<StockData> empty;
   auto it = m_stock_data.find(symbol);
   return (it != m_stock_data.end()) ? it->second : empty;
 }
