@@ -16,7 +16,18 @@
         "CMAKE_TOOLCHAIN_FILE": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
         "VCPKG_TARGET_TRIPLET": "x64-windows",
         "CMAKE_C_COMPILER": "cl.exe",
-        "CMAKE_CXX_COMPILER": "cl.exe"
+        "CMAKE_CXX_COMPILER": "cl.exe",
+        "BUILD_TESTS": "ON",
+        "BUILD_BENCHMARKS": "OFF"
+      }
+    },
+    {
+      "name": "windows-vcpkg-debug-all",
+      "inherits": "windows-vcpkg-debug",
+      "displayName": "Windows MSVC Debug (App + Tests + Benchmarks)",
+      "cacheVariables": {
+        "BUILD_TESTS": "ON",
+        "BUILD_BENCHMARKS": "ON"
       }
     },
     {
@@ -29,7 +40,9 @@
         "CMAKE_TOOLCHAIN_FILE": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
         "VCPKG_TARGET_TRIPLET": "x64-windows",
         "CMAKE_C_COMPILER": "cl.exe",
-        "CMAKE_CXX_COMPILER": "cl.exe"
+        "CMAKE_CXX_COMPILER": "cl.exe",
+        "BUILD_TESTS": "OFF",
+        "BUILD_BENCHMARKS": "ON"
       }
     },
     {
@@ -42,7 +55,18 @@
         "CMAKE_TOOLCHAIN_FILE": "$env{HOME}/vcpkg/scripts/buildsystems/vcpkg.cmake",
         "VCPKG_TARGET_TRIPLET": "x64-linux",
         "CMAKE_C_COMPILER": "gcc",
-        "CMAKE_CXX_COMPILER": "g++"
+        "CMAKE_CXX_COMPILER": "g++",
+        "BUILD_TESTS": "ON",
+        "BUILD_BENCHMARKS": "OFF"
+      }
+    },
+    {
+      "name": "linux-vcpkg-gcc-debug-all",
+      "inherits": "linux-vcpkg-gcc-debug",
+      "displayName": "Linux GCC Debug (App + Tests + Benchmarks)",
+      "cacheVariables": {
+        "BUILD_TESTS": "ON",
+        "BUILD_BENCHMARKS": "ON"
       }
     },
     {
@@ -55,7 +79,9 @@
         "CMAKE_TOOLCHAIN_FILE": "$env{HOME}/vcpkg/scripts/buildsystems/vcpkg.cmake",
         "VCPKG_TARGET_TRIPLET": "x64-linux",
         "CMAKE_C_COMPILER": "gcc",
-        "CMAKE_CXX_COMPILER": "g++"
+        "CMAKE_CXX_COMPILER": "g++",
+        "BUILD_TESTS": "OFF",
+        "BUILD_BENCHMARKS": "ON"
       }
     },
     {
@@ -68,7 +94,9 @@
         "CMAKE_TOOLCHAIN_FILE": "$env{HOME}/vcpkg/scripts/buildsystems/vcpkg.cmake",
         "VCPKG_TARGET_TRIPLET": "x64-linux",
         "CMAKE_C_COMPILER": "clang",
-        "CMAKE_CXX_COMPILER": "clang++"
+        "CMAKE_CXX_COMPILER": "clang++",
+        "BUILD_TESTS": "ON",
+        "BUILD_BENCHMARKS": "OFF"
       }
     },
     {
@@ -81,15 +109,19 @@
         "CMAKE_TOOLCHAIN_FILE": "$env{HOME}/vcpkg/scripts/buildsystems/vcpkg.cmake",
         "VCPKG_TARGET_TRIPLET": "x64-linux",
         "CMAKE_C_COMPILER": "clang",
-        "CMAKE_CXX_COMPILER": "clang++"
+        "CMAKE_CXX_COMPILER": "clang++",
+        "BUILD_TESTS": "OFF",
+        "BUILD_BENCHMARKS": "ON"
       }
     }
   ],
 
   "buildPresets": [
     { "name": "windows-debug", "configurePreset": "windows-vcpkg-debug" },
+    { "name": "windows-debug-all", "configurePreset": "windows-vcpkg-debug-all" },
     { "name": "windows-release", "configurePreset": "windows-vcpkg-release" },
     { "name": "linux-gcc-debug", "configurePreset": "linux-vcpkg-gcc-debug" },
+    { "name": "linux-gcc-debug-all", "configurePreset": "linux-vcpkg-gcc-debug-all" },
     { "name": "linux-gcc-release", "configurePreset": "linux-vcpkg-gcc-release" },
     { "name": "linux-clang-debug", "configurePreset": "linux-vcpkg-clang-debug" },
     { "name": "linux-clang-release", "configurePreset": "linux-vcpkg-clang-release" }

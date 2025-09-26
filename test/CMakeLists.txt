@@ -27,6 +27,7 @@ target_sources(unit_tests
         test_latency.cpp
         test_client.cpp
         test_server.cpp
+        test_thread_pool.cpp
         ${CMAKE_SOURCE_DIR}/src/server/MarketDataServer.cpp
 )
 
@@ -35,6 +36,7 @@ target_include_directories(unit_tests
     PRIVATE
         ${CMAKE_SOURCE_DIR}/src/client
         ${CMAKE_SOURCE_DIR}/src/server
+        ${CMAKE_SOURCE_DIR}/src/utilities
 )
 
 # Link dependencies

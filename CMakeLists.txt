@@ -110,4 +110,15 @@ target_include_directories(marketdata_proto PUBLIC
 add_subdirectory(src/server)
 add_subdirectory(src/client)
 add_subdirectory(src/app)
-add_subdirectory(test)
+
+# ---- Options for tests and benchmarks ----
+option(BUILD_TESTS "Build unit tests" OFF)
+option(BUILD_BENCHMARKS "Build benchmarks" OFF)
+
+if(BUILD_TESTS)
+    add_subdirectory(test)
+endif()
+
+if(BUILD_BENCHMARKS)
+    add_subdirectory(benchmarks)
+endif()

@@ -26,6 +26,8 @@ target_include_directories(hft_app
         ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
+include_directories(${CMAKE_SOURCE_DIR}/src)
+
 # Link dependencies
 # ---------------------------------------------------------
 # - marketdata_proto: library with generated protobuf/gRPC code
