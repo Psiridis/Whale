@@ -53,8 +53,12 @@ Clone and bootstrap vcpkg (only once per system):
 cd  ~
 git  clone  https://github.com/microsoft/vcpkg.git
 cd  vcpkg
-./bootstrap-vcpkg.sh  # On Linux
-.\bootstrap-vcpkg.bat  # On Windows
+# On Linux
+./bootstrap-vcpkg.sh
+./vcpkg install protobuf grpc  
+# On Windows
+.\bootstrap-vcpkg.bat
+.\vcpkg install protobuf grpc
 ```
 ------------------------------------------------------------------------
 ## 🔹 Configure and Build
@@ -66,19 +70,32 @@ cd path\to\project
 cmake --list-presets
 ```
 
+Currently the available presets are (this is what cmake --list-presets will print):
+
+"windows-vcpkg-debug"       - Windows Debug (MSVC + vcpkg)
+"windows-vcpkg-debug-all"   - Windows MSVC Debug (App + Tests + Benchmarks)
+"windows-vcpkg-release"     - Windows Release (MSVC + vcpkg)
+"linux-vcpkg-gcc-debug"     - Linux GCC Debug (vcpkg)
+"linux-vcpkg-gcc-debug-all" - Linux GCC Debug (App + Tests + Benchmarks)
+"linux-vcpkg-gcc-release"   - Linux GCC Release (vcpkg)
+"linux-vcpkg-clang-debug"   - Linux Clang Debug (vcpkg)
+"linux-vcpkg-clang-release" - Linux Clang Release (vcpkg)
+
+All configurations need the vcpkg package manager. Once you have select the preset in order to build the project you just need to specify which preset to build. The name of the build  preset is the same as the one in the list above (e.g cmake --build --preset=windows-vcpkg-debug)
+
 ### 🖥️ Windows (MSVC + vcpkg)
 
 ``` powershell
 cd path\to\project
 cmake --preset=windows-vcpkg-debug
-cmake --build --preset=windows-debug
+cmake --build --preset=windows-vcpkg-debug
 ```
 ### 🐧 Linux (WSL, GCC + vcpkg)
 
 ``` bash
-cd  ~/Projects/MyProject
+cd  path/to/project
 cmake  --preset=linux-vcpkg-gcc-debug
-cmake  --build  --preset=linux-gcc-debug
+cmake  --build  --preset=linux-vcpkg-gcc-debug
 ```
 ------------------------------------------------------------------------
 ## ▶️ Running the Applications
@@ -87,7 +104,7 @@ Once the project has been built successfully (for example with):
 
 ```bash
 cmake --preset=linux-vcpkg-gcc-debug
-cmake --build --preset=linux-gcc-debug
+cmake --build --preset=linux-vcpkg-gcc-debug
 ```
 
 you can run the server and client applications.
@@ -142,7 +159,56 @@ After execution, the `data/csv/` folder will contain updated CSV files for the p
 -  `data/` → Fetched data used from the server
 -  `proto/` → `.proto` definitions (compiled into C++ sources by protoc + gRPC plugin)
 -  `src/` → Contains the application (`app/`), a client library (`client/`) and the server application (`server/`)
--  `test/` → Unit tests
+-  `test/` → Unit tests performed with Google Test framework
+-  `benchmarks/` → Contains the benchmarks performed with Google Benchmark framework
+------------------------------------------------------------------------
+## 🏎️ Running Benchmarks
+
+This project uses the **Google Benchmark** framework to measure the performance of critical components.
+
+### 🔹 Build with Benchmark Support
+
+By default, benchmarks are not built. Use one of the `*-debug-all` or `*-release` presets that enable benchmarks:
+
+```bash
+# Example (Linux, GCC, Debug with tests + benchmarks)
+cmake --preset=linux-vcpkg-gcc-debug-all
+cmake --build --preset=linux-vcpkg-gcc-debug-all
+```
+
+or for Release builds with benchmarks:
+
+```bash
+cmake --preset=linux-vcpkg-gcc-release
+cmake --build --preset=linux-vcpkg-gcc-release
+```
+
+### 🔹 Run Benchmarks
+
+After a successful build, benchmark executables are located under:
+
+```
+./build/<configure-preset>/benchmark/<Configuration>/
+```
+
+Run them directly from the terminal. For example:
+
+```bash
+./build/linux-vcpkg-gcc-release/benchmark/Release/hft_benchmark
+```
+
+### 🔹 Example Output
+
+When executed, benchmarks will report timing statistics, e.g.:
+
+```
+------------------------------------------------------
+Benchmark                Time           CPU Iterations
+------------------------------------------------------
+BM_ProcessMarketData     123 ns        123 ns   5000000
+BM_ParseMessage          456 ns        455 ns   2000000
+```
+
 ------------------------------------------------------------------------
 ## 🚀 Summary
 

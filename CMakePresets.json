@@ -117,32 +117,14 @@
   ],
 
   "buildPresets": [
-    { "name": "windows-debug", "configurePreset": "windows-vcpkg-debug" },
-    { "name": "windows-debug-all", "configurePreset": "windows-vcpkg-debug-all" },
-    { "name": "windows-release", "configurePreset": "windows-vcpkg-release" },
-    { "name": "linux-gcc-debug", "configurePreset": "linux-vcpkg-gcc-debug" },
-    { "name": "linux-gcc-debug-all", "configurePreset": "linux-vcpkg-gcc-debug-all" },
-    { "name": "linux-gcc-release", "configurePreset": "linux-vcpkg-gcc-release" },
-    { "name": "linux-clang-debug", "configurePreset": "linux-vcpkg-clang-debug" },
-    { "name": "linux-clang-release", "configurePreset": "linux-vcpkg-clang-release" }
-  ],
-
-  "testPresets": [
-    {
-      "name": "windows-tests",
-      "configurePreset": "windows-vcpkg-debug",
-      "execution": { "noTestsAction": "error" }
-    },
-    {
-      "name": "linux-gcc-tests",
-      "configurePreset": "linux-vcpkg-gcc-debug",
-      "execution": { "noTestsAction": "error" }
-    },
-    {
-      "name": "linux-clang-tests",
-      "configurePreset": "linux-vcpkg-clang-debug",
-      "execution": { "noTestsAction": "error" }
-    }
+    { "name": "windows-vcpkg-debug", "configurePreset": "windows-vcpkg-debug" },
+    { "name": "windows-vcpkg-debug-all", "configurePreset": "windows-vcpkg-debug-all" },
+    { "name": "windows-vcpkg-release", "configurePreset": "windows-vcpkg-release" },
+    { "name": "linux-vcpkg-gcc-debug", "configurePreset": "linux-vcpkg-gcc-debug" },
+    { "name": "linux-vcpkg-gcc-debug-all", "configurePreset": "linux-vcpkg-gcc-debug-all" },
+    { "name": "linux-vcpkg-gcc-release", "configurePreset": "linux-vcpkg-gcc-release" },
+    { "name": "linux-vcpkg-clang-debug", "configurePreset": "linux-vcpkg-clang-debug" },
+    { "name": "linux-vcpkg-clang-release", "configurePreset": "linux-vcpkg-clang-release" }
   ]
 }
 
