@@ -72,6 +72,7 @@ cmake --list-presets
 
 Currently the available presets are (this is what cmake --list-presets will print):
 
+```
 "windows-vcpkg-debug"       - Windows Debug (MSVC + vcpkg)
 "windows-vcpkg-debug-all"   - Windows MSVC Debug (App + Tests + Benchmarks)
 "windows-vcpkg-release"     - Windows Release (MSVC + vcpkg)
@@ -80,7 +81,7 @@ Currently the available presets are (this is what cmake --list-presets will prin
 "linux-vcpkg-gcc-release"   - Linux GCC Release (vcpkg)
 "linux-vcpkg-clang-debug"   - Linux Clang Debug (vcpkg)
 "linux-vcpkg-clang-release" - Linux Clang Release (vcpkg)
-
+```
 All configurations need the vcpkg package manager. Once you have select the preset in order to build the project you just need to specify which preset to build. The name of the build  preset is the same as the one in the list above (e.g cmake --build --preset=windows-vcpkg-debug)
 
 ### 🖥️ Windows (MSVC + vcpkg)
