@@ -3,6 +3,7 @@
 #include <iostream>
 #include <thread>
 #include <vector>
+#include "utilities/thread_pool.hpp"
 
 int main(int argc, char** argv) {
     std::string  port;
@@ -19,12 +20,13 @@ int main(int argc, char** argv) {
 
     // Stocks we want to subscribe to
     std::vector<std::string> stocks = {"AAPL", "AMZM", "GOOGL", "JNJ", "JPM", "META", "MSFT", "NVDA", "PG", "TSLA"};
+    
+    util::thread_pool thread_pool(stocks.size());
 
-    // Keep track of threads
-    std::vector<std::thread> threads;
+     std::vector<std::future<void>> futures;
 
     for (const auto& stock : stocks) {
-        threads.emplace_back([&, stock]() {
+        auto fut = thread_pool.ExecuteTask([&, stock]() {
             auto client_or = MarketDataClient::createClient(channel);
             if (!client_or.ok()) {
                 std::cerr << "[App] Failed to create client for " << stock
@@ -42,13 +44,13 @@ int main(int argc, char** argv) {
             std::cout << "[App] Subscribing to " << stock << std::endl;
             client.subscribeToSymbol(stock);
         });
+
+        futures.push_back(std::move(fut));
     }
 
-    // Wait for all threads to finish
-    for (auto& t : threads) {
-        if (t.joinable()) {
-            t.join();
-        }
+    // Wait for all tasks to finish
+    for (auto& f : futures) {
+        f.get();  // blocks until that task completes
     }
 
     return 0;
