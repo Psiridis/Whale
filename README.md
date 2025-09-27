@@ -204,10 +204,14 @@ When executed, benchmarks will report timing statistics, e.g.:
 
 ```
 ------------------------------------------------------
-Benchmark                Time           CPU Iterations
+Benchmark                   Time        CPU Iterations
 ------------------------------------------------------
-BM_ProcessMarketData     123 ns        123 ns   5000000
-BM_ParseMessage          456 ns        455 ns   2000000
+BM_ThreadPool/1/10   22748704 ns  364953 ns       1000
+BM_ThreadPool/2/10   13163256 ns  432193 ns       1000
+...
+...
+...
+...
 ```
 
 ------------------------------------------------------------------------
