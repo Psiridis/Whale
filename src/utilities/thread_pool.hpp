@@ -23,8 +23,6 @@ namespace util
 
         unsigned int size() const;
 
-        void push(std::function<void()> const &task);
-
         template <class F, class... Args>
         auto ExecuteTask(F &&f, Args &&...args)
             -> std::future<std::invoke_result_t<F, Args...>>;
@@ -97,29 +95,6 @@ namespace util
     {
         return m_workers.size();
     }
-
-    // Push a plain void() task
-    inline void thread_pool::push(std::function<void()> const &task) 
-    {
-        if (m_stop) {
-            // Fail-safe: ignore instead of throwing
-            std::cerr << "[ThreadPool] Ignoring task submission after m_stop\n";
-            return;
-        }
-
-        // Wrap task in try/catch so worker won’t crash
-        m_tasks.push([task]() {
-            try {
-                task();
-            } catch (const std::exception &e) {
-                std::cerr << "[ThreadPool] Task threw exception: " 
-                          << e.what() << "\n";
-            } catch (...) {
-                std::cerr << "[ThreadPool] Task threw unknown exception\n";
-            }
-        });
-    }
-
 
     // ExecuteTask: wraps arbitrary callable + args into packaged_task
     template <class F, class... Args>
